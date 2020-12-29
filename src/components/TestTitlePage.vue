@@ -5,7 +5,7 @@
       <h1>{{ msg }}</h1>
     </div>
     <b-button class="button-to-chart" @click.prevent="setGraphVisible">
-      <div class="button-text">{{ "Перейти к графику" }}</div>
+      <div class="button-text">{{ "Show chart with gradient area" }}</div>
     </b-button>
     <filled-line-with-grid v-if="showGraph" />
   </div>

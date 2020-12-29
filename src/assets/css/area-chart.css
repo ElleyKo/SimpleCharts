@@ -1,0 +1,26 @@
+.tick {
+  opacity: 1;
+}
+.grid-line {
+  stroke-opacity: 0.4;
+  stroke: #333;
+  stroke-width: 1px;
+  stroke-dasharray: 3 7;
+}
+text {
+  font: 14px Verdana;
+  fill: #174b93;
+}
+.area {
+  fill: url("#area-gradient");
+  opacity: 35%;
+}
+.area-border {
+  stroke: #3875a9;
+  stroke-width: 1.5;
+  fill: none;
+}
+.container {
+  max-width: 510px;
+  max-height: 500px;
+}

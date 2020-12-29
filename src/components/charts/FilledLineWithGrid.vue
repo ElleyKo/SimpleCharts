@@ -33,12 +33,19 @@
       <path :d="getArea" class="area"></path>
       <path :d="getLine" class="area-border"></path>
     </g>
+    <defs>
+      <linearGradient id="area-gradient" gradientTransform="rotate(90)">
+        <stop offset="0%" stop-color="#f5ff1e" />
+        <stop offset="50%" stop-color="#fbb91c" />
+        <stop offset="100%" stop-color="#174b93" />
+      </linearGradient>
+    </defs>
   </svg>
 </template>
 
 <script>
 import chartData from "@/components/charts/ChartMock.json";
-import * as d3 from "d3-scale";
+import * as d3Scale from "d3-scale";
 import * as d3Shape from "d3-shape";
 export default {
   chartData,
@@ -70,12 +77,12 @@ export default {
     viewBox() {
       return `0 0 ${this.width} ${this.height}`;
     },
-    // длина оси Y = высота контейнера svg - отступ сверху и снизу
     yAxisLength() {
+      // длина оси Y = высота контейнера svg - отступ сверху и снизу
       return this.height - 2 * this.margin;
     },
-    // длина оси X= ширина контейнера svg - отступ слева и справа
     xAxisLength() {
+      // длина оси X= ширина контейнера svg - отступ слева и справа
       return this.width - 2 * this.margin;
     },
     y2ValueXAxis() {
@@ -103,6 +110,7 @@ export default {
     return {
       isLoaded: false,
       zeroValue: 0,
+      maxDomain: 100,
       scaleX: [],
       scaleY: [],
       rawData: [],
@@ -121,17 +129,15 @@ export default {
       this.rawData = rawData;
     },
     setScales() {
-      this.scaleX = d3
+      this.scaleX = d3Scale
         .scaleLinear()
-        .domain([0, 100])
+        .domain([this.zeroValue, this.maxDomain])
         .range([0, this.xAxisLength]);
 
-      this.scaleY = d3
+      this.scaleY = d3Scale
         .scaleLinear()
-        .domain([100, 0])
+        .domain([this.maxDomain, this.zeroValue])
         .range([0, this.yAxisLength]);
-      console.log(this.scaleX);
-      console.log(this.scaleY);
     },
     getX(d) {
       return d.x;
@@ -148,35 +154,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.tick {
-  opacity: 1;
-}
-.path,
-.line {
-  fill: none;
-  stroke: #333;
-  stroke-width: 1px;
-  stroke-dasharray: 2;
-}
-.grid-line {
-  stroke: #000;
-  stroke-opacity: 0.2;
-}
-text {
-  font: 14px Verdana;
-  fill: #7892b6;
-}
-.area {
-  fill: lightblue;
-  opacity: 50%;
-}
-.area-border {
-  stroke: steelblue;
-  stroke-width: 2;
-}
-.container {
-  max-width: 510px;
-  max-height: 500px;
-}
-</style>
+<style src="@/assets/css/area-chart.css"></style>
