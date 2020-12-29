@@ -4,33 +4,47 @@
       <img alt="Vue logo" src="@/assets/logo.png" />
       <h1>{{ msg }}</h1>
     </div>
-    <b-button class="button-to-chart" @click.prevent="setGraphVisible">
-      <div class="button-text">{{ "Show chart with gradient area" }}</div>
-    </b-button>
-    <filled-line-with-grid v-if="showGraph" />
+    <div class="chart-with-btn">
+      <b-button class="button-to-chart" @click.prevent="setAreaChartVisible">
+        <div class="button-text">{{ "Show chart with gradient area" }}</div>
+      </b-button>
+      <area-chart-with-grid v-if="showArea" />
+    </div>
+    <div class="chart-with-btn">
+      <b-button class="button-to-chart" @click.prevent="setBarsChartVisible">
+        <div class="button-text">{{ "Show chart with bars" }}</div>
+      </b-button>
+      <bars-chart-with-grid v-if="showBars" />
+    </div>
   </div>
 </template>
 
 <script>
 import { BButton } from "bootstrap-vue";
-import FilledLineWithGrid from "@/components/charts/FilledLineWithGrid";
+import AreaChartWithGrid from "@/components/charts/areaChart/AreaChartWithGrid";
+import BarsChartWithGrid from "@/components/charts/barsChart/BarsChartWithGrid";
 export default {
   name: "TestTitlePage",
   components: {
     BButton,
-    FilledLineWithGrid,
+    AreaChartWithGrid,
+    BarsChartWithGrid,
   },
   props: {
     msg: String,
   },
   data() {
     return {
-      showGraph: false,
+      showArea: false,
+      showBars: false,
     };
   },
   methods: {
-    setGraphVisible() {
-      this.showGraph = !this.showGraph;
+    setAreaChartVisible() {
+      this.showArea = !this.showArea;
+    },
+    setBarsChartVisible() {
+      this.showBars = !this.showBars;
     },
   },
 };
