@@ -6,9 +6,16 @@
   color: #2c3e50;
   margin-top: 60px;
 }
+.chart-with-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
 .button-to-chart {
   height: 65px;
   width: 175px;
+  margin: 10px;
   background: rgb(0 255 255 / 0.5) 25%;
   border: #2c3e50 1px dashed;
 }

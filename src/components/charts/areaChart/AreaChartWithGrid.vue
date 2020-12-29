@@ -1,34 +1,13 @@
 <template>
   <svg class="container" v-if="isLoaded" :viewBox="viewBox">
-    <g class="x-axis" :transform="transformXParams">
-      <g
-        class="tick"
-        v-for="point in $options.chartData"
-        :transform="'translate(' + scaleX(point.x) + ', 0)'"
-        :key="point.x"
-      >
-        <line y2="6" x2="0"></line>
-        <text dy=".71em" y="9" x="0" style="text-anchor: middle;">
-          {{ point.x }}
-        </text>
-        <line class="grid-line" x1="0" y1="0" x2="0" y2="-440"></line>
-      </g>
-    </g>
-    <g class="y-axis" :transform="transformYParams">
-      <g
-        class="tick"
-        v-for="point in $options.chartData"
-        :transform="'translate(0, ' + scaleY(point.x) + ')'"
-        style="opacity: 1;"
-        :key="point.x"
-      >
-        <line x2="-6" y2="0"></line>
-        <text dy=".32em" x="-9" y="0" style="text-anchor: end;">
-          {{ point.x }}
-        </text>
-        <line class="grid-line" x1="0" y1="0" x2="440" y2="0"></line>
-      </g>
-    </g>
+    <chart-grid
+      :height="height"
+      :width="width"
+      :margin="margin"
+      :chartData="$options.chartData"
+      :scaleX="scaleX"
+      :scaleY="scaleY"
+    />
     <g>
       <path :d="getArea" class="area"></path>
       <path :d="getLine" class="area-border"></path>
@@ -39,7 +18,26 @@
         :cy="point.y"
         :r="pointRadius"
         class="pointColor"
-      ></circle>
+      >
+        <g class="tooltip-rect" transform="translate(350,200)">
+          <rect
+            class="tooltip-rect"
+            x="-3em"
+            y="-45"
+            width="6em"
+            height="1.25em"
+          />
+          <text
+            class="tooltip-text"
+            y="-45"
+            dy="1em"
+            text-anchor="middle"
+            fill="ForestGreen"
+          >
+            {{ getTooltipText(point.x, point.y) }}
+          </text>
+        </g>
+      </circle>
     </g>
     <defs>
       <linearGradient id="area-gradient" gradientTransform="rotate(90)">
@@ -52,13 +50,14 @@
 </template>
 
 <script>
-import chartData from "@/components/charts/ChartMock.json";
+import chartData from "@/components/charts/areaChart/AreaChartMock.json";
+import ChartGrid from "@/components/common/ChartGrid";
 import * as d3Scale from "d3-scale";
 import * as d3Shape from "d3-shape";
 export default {
   chartData,
-  name: "FilledLineWithGrid",
-  components: {},
+  name: "AreaChartWithGrid",
+  components: { ChartGrid },
   props: {
     height: {
       type: Number,
@@ -78,14 +77,6 @@ export default {
     },
   },
   computed: {
-    transformXParams() {
-      return (
-        "translate(" + this.margin + "," + (this.height - this.margin) + ")"
-      );
-    },
-    transformYParams() {
-      return "translate(" + this.margin + "," + this.margin + ")";
-    },
     viewBox() {
       return `0 0 ${this.width} ${this.height}`;
     },
@@ -156,6 +147,9 @@ export default {
     },
     getY(d) {
       return d.y;
+    },
+    getTooltipText(x, y) {
+      return `x: ${x}, y: ${y}`;
     },
   },
   mounted() {

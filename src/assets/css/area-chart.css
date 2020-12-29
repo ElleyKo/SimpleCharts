@@ -7,6 +7,14 @@
   stroke-width: 1px;
   stroke-dasharray: 3 7;
 }
+.axis-mark {
+  stroke: #333;
+  stroke-width: 1px;
+}
+.axis-title {
+  text-anchor: "end";
+  stroke: #333;
+}
 text {
   font: 14px Verdana;
   fill: #174b93;
@@ -21,11 +29,30 @@ text {
   fill: none;
 }
 .container {
-  max-width: 510px;
-  max-height: 500px;
+  margin: 0 400px;
 }
 .pointColor {
   fill: #ffeec1;
   stroke: #174b93;
   stroke-width: 1px;
+}
+.pointColor:hover {
+  fill: #ff9500;
+  cursor: pointer;
+}
+.pointColor:hover .tooltip {
+  visibility: visible;
+}
+.pointColor .tooltip {
+  visibility: hidden;
+}
+.tooltip .tooltip-rect {
+  background: lightblue;
+  border: solid gray;
+  position: absolute;
+  max-width: 8em;
+  text-align: center;
+}
+.tooltip .tooltip-text {
+  fill: red;
 }
