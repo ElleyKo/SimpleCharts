@@ -32,6 +32,14 @@
     <g>
       <path :d="getArea" class="area"></path>
       <path :d="getLine" class="area-border"></path>
+      <circle
+        v-for="(point, index) in rawData"
+        :key="index"
+        :cx="point.x"
+        :cy="point.y"
+        :r="pointRadius"
+        class="pointColor"
+      ></circle>
     </g>
     <defs>
       <linearGradient id="area-gradient" gradientTransform="rotate(90)">
@@ -63,6 +71,10 @@ export default {
     margin: {
       type: Number,
       default: 30,
+    },
+    pointRadius: {
+      type: Number,
+      default: 3.5,
     },
   },
   computed: {

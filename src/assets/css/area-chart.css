@@ -24,3 +24,8 @@ text {
   max-width: 510px;
   max-height: 500px;
 }
+.pointColor {
+  fill: #ffeec1;
+  stroke: #174b93;
+  stroke-width: 1px;
+}

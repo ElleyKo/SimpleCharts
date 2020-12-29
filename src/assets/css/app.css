@@ -9,7 +9,7 @@
 .button-to-chart {
   height: 65px;
   width: 175px;
-  background: cyan;
+  background: rgb(0 255 255 / 0.5) 25%;
   border: #2c3e50 1px dashed;
 }
 
