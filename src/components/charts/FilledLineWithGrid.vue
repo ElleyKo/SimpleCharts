@@ -1,10 +1,29 @@
 <template>
   <svg class="container" :viewBox="viewBox">
     <g class="x-axis" :transform="transformXParams">
-      <x-axis />
+      <line
+        v-for="item in chartData"
+        :key="item.x"
+        class="grid-line"
+        :x1="zeroValue"
+        :x2="zeroValue"
+        :y1="zeroValue"
+        :y2="y2ValueXAxis"
+      />
     </g>
     <g class="y-axis" :transform="transformYParams">
-      <y-axis />
+      <line
+        tick=""
+        class="grid-line"
+        :x1="zeroValue"
+        :x2="xAxisLength"
+        :y1="zeroValue"
+        :y2="zeroValue"
+      />
+    </g>
+    <g>
+      <path></path>
+      <path></path>
     </g>
   </svg>
 </template>
@@ -49,6 +68,14 @@ export default {
     xAxisLength() {
       return this.width - 2 * this.margin;
     },
+    y2ValueXAxis() {
+      return -(this.height - 2 * this.margin);
+    },
+  },
+  data() {
+    return {
+      zeroValue: 0,
+    };
   },
   methods: {
     addAxisY(chartData) {
@@ -87,13 +114,6 @@ export default {
         .axis()
         .scale(this.scaleX)
         .orient("bottom");
-
-      // отрисовка оси Y
-      container
-        .append("g")
-        .attr("class", "y-axis")
-        .attr("transform", "translate(" + this.margin + "," + this.margin + ")")
-        .call(this.yAxis);
 
       // создаем набор вертикальных линий для сетки
       d3.selectAll("g.x-axis g.tick")
@@ -147,16 +167,16 @@ export default {
 </script>
 
 <style scoped>
-.axis path,
-.axis line {
+.path,
+.line {
   fill: none;
   stroke: #333;
 }
-.axis .grid-line {
+.grid-line {
   stroke: #000;
   stroke-opacity: 0.2;
 }
-.axis text {
+text {
   font: 10px Verdana;
 }
 .container {
