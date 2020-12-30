@@ -54,7 +54,7 @@ export default {
     },
     margin: {
       type: Number,
-      default: 200,
+      default: 30,
     },
     chartTitle: {
       type: String,
@@ -74,7 +74,7 @@ export default {
       return `0 0 ${this.width} ${this.height}`;
     },
     yAxisLength() {
-      return this.height - 250;
+      return this.height - this.margin;
     },
     xAxisLength() {
       return this.width - this.margin;
@@ -96,11 +96,8 @@ export default {
     barWidth() {
       return this.scaleX.bandwidth();
     },
-    barHeight(point) {
-      const h = this.height - this.scaleY(point.y);
-      console.log(this.height);
-      console.log(this.scaleY(point.y));
-      return h;
+    barHeight(y) {
+      return this.height - this.scaleY(y);
     },
     setScales() {
       const chartData = this.$options.chartData;
