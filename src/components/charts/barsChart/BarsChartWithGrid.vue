@@ -1,5 +1,6 @@
 <template>
   <svg class="container" v-if="isLoaded" :viewBox="viewBox">
+    <axes-titles xTitle="Years" yTitle="Stock Price" />
     <chart-grid
       :height="height"
       :width="width"
@@ -7,19 +8,17 @@
       :chartData="$options.chartData"
       :scaleX="scaleX"
       :scaleY="scaleY"
-      xTitle="Years"
-      yTitle="Stock Price"
     />
-    <text class="bar-title" :x="margin" :y="50">{{ chartTitle }}</text>
+    <chart-title :chartTitle="chartTitle" :margin="margin" />
     <g transform="translate(100,100)">
       <rect
         class="bar"
-        v-for="(point, index) in rawData"
+        v-for="(point, index) in $options.chartData"
         :key="index"
         :x="scaleX(point.x)"
         :y="scaleY(point.y)"
         :height="barHeight(point.y)"
-        :width="5"
+        :width="barWidth()"
       ></rect>
     </g>
     <defs>
@@ -34,13 +33,16 @@
 
 <script>
 import chartData from "@/components/charts/barsChart/BarsChartMock.json";
+import ChartTitle from "@/components/common/ChartTitle";
 import ChartGrid from "@/components/common/ChartGrid";
+import AxesTitles from "@/components/common/AxesTitles";
+import * as d3 from "d3";
 import * as d3Scale from "d3-scale";
-import * as d3Shape from "d3-shape";
+// import * as d3Shape from "d3-shape";
 export default {
   chartData,
   name: "BarsChartWithGrid",
-  components: { ChartGrid },
+  components: { ChartGrid, ChartTitle, AxesTitles },
   props: {
     height: {
       type: Number,
@@ -72,30 +74,13 @@ export default {
       return `0 0 ${this.width} ${this.height}`;
     },
     yAxisLength() {
-      return this.height - this.margin;
+      return this.height - 250;
     },
     xAxisLength() {
       return this.width - this.margin;
     },
     y2ValueXAxis() {
       return -(this.height - 2 * this.margin);
-    },
-    getArea() {
-      const area = d3Shape
-        .area()
-        .x((d) => d.x)
-        .y0(this.height - this.margin)
-        .y1((d) => d.y)
-        .curve(d3Shape.curveCatmullRom.alpha(0.3));
-      return area(this.rawData);
-    },
-    getLine() {
-      const line = d3Shape
-        .line()
-        .x((d) => d.x)
-        .y((d) => d.y)
-        .curve(d3Shape.curveCatmullRom.alpha(0.3));
-      return line(this.rawData);
     },
   },
   data() {
@@ -105,34 +90,30 @@ export default {
       maxDomain: 100,
       scaleX: [],
       scaleY: [],
-      rawData: [],
     };
   },
   methods: {
-    setRawData() {
-      const chartData = this.$options.chartData;
-      const rawData = [];
-      chartData.forEach((point) => {
-        rawData.push({
-          x: this.scaleX(point.x) + this.margin,
-          y: this.scaleY(point.y) + this.margin,
-        });
-      });
-      this.rawData = rawData;
+    barWidth() {
+      return this.scaleX.bandwidth();
     },
     barHeight(point) {
-      return this.height - this.scaleY(point.y);
+      const h = this.height - this.scaleY(point.y);
+      console.log(this.height);
+      console.log(this.scaleY(point.y));
+      return h;
     },
     setScales() {
+      const chartData = this.$options.chartData;
       this.scaleX = d3Scale
-        .scaleLinear()
-        .domain([this.zeroValue, this.maxDomain])
-        .range([0, this.xAxisLength]);
+        .scaleBand()
+        .range([this.zeroValue, this.xAxisLength])
+        .padding(0.4)
+        .domain(chartData.map((d) => d.x));
 
       this.scaleY = d3Scale
         .scaleLinear()
-        .domain([this.maxDomain, this.zeroValue])
-        .range([0, this.yAxisLength]);
+        .range([this.yAxisLength, 0])
+        .domain([0, d3.max(chartData, (d) => d.y)]);
     },
     getX(d) {
       return d.x;
@@ -146,7 +127,6 @@ export default {
   },
   mounted() {
     this.setScales();
-    this.setRawData();
     this.isLoaded = true;
   },
 };

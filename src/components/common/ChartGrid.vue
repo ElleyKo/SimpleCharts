@@ -12,11 +12,15 @@
         <text dy=".71em" y="9" x="0" style="text-anchor: middle;">
           {{ point.x }}
         </text>
-        <line class="grid-line" x1="0" y1="0" x2="0" y2="-440"></line>
+        <line
+          class="grid-line"
+          v-if="showGrid"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="-440"
+        ></line>
       </g>
-      <text class="axis-title" y="50" x="300" v-if="xTitle">
-        {{ xTitle }}
-      </text>
     </g>
     <g class="y-axis" :transform="transformYParams">
       <g
@@ -31,17 +35,15 @@
         <text dy=".32em" x="-5" y="0" style="text-anchor: end;">
           {{ point.x }}
         </text>
-        <line class="grid-line" x1="0" y1="0" x2="440" y2="0"></line>
+        <line
+          class="grid-line"
+          v-if="showGrid"
+          x1="0"
+          y1="0"
+          x2="440"
+          y2="0"
+        ></line>
       </g>
-      <text
-        class="axis-title"
-        transform="rotate(-90)"
-        y="6"
-        dy="-5.1em"
-        v-if="yTitle"
-      >
-        {{ yTitle }}
-      </text>
     </g>
   </fragment>
 </template>
@@ -74,13 +76,9 @@ export default {
     scaleY: {
       type: Function,
     },
-    yTitle: {
-      type: String,
-      default: "",
-    },
-    xTitle: {
-      type: String,
-      default: "",
+    showGrid: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {
