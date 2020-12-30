@@ -10,7 +10,7 @@
       xTitle="Years"
       yTitle="Stock Price"
     />
-    <text class="bar-title" :x="50" :y="50">{{ chartTitle }}</text>
+    <text class="bar-title" :x="margin" :y="50">{{ chartTitle }}</text>
     <g transform="translate(100,100)">
       <rect
         class="bar"
@@ -52,7 +52,7 @@ export default {
     },
     margin: {
       type: Number,
-      default: 100,
+      default: 200,
     },
     chartTitle: {
       type: String,
@@ -72,12 +72,10 @@ export default {
       return `0 0 ${this.width} ${this.height}`;
     },
     yAxisLength() {
-      // длина оси Y = высота контейнера svg - отступ сверху и снизу
-      return this.height - 2 * this.margin;
+      return this.height - this.margin;
     },
     xAxisLength() {
-      // длина оси X= ширина контейнера svg - отступ слева и справа
-      return this.width - 2 * this.margin;
+      return this.width - this.margin;
     },
     y2ValueXAxis() {
       return -(this.height - 2 * this.margin);
