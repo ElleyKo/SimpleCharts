@@ -5,13 +5,15 @@
     <svg class="container" v-if="isLoaded" :viewBox="viewBox">
       <axes-titles xTitle="Years" yTitle="Stock Price" />
       <chart-grid
-        :height="xAxisLength"
-        :width="barWidth()"
+        :height="yAxisLength"
+        :width="xAxisLength"
         :margin="margin"
         :chartData="$options.chartData"
         :scaleX="scaleX"
         :scaleY="scaleY"
+        :addStrictXLine="true"
       />
+      <!--
       <g :transform="transformYParams">
         <rect
           class="bar"
@@ -23,6 +25,7 @@
           :width="barWidth()"
         ></rect>
       </g>
+      -->
       <defs>
         <linearGradient id="area-gradient" gradientTransform="rotate(90)">
           <stop offset="0%" stop-color="#f5ff1e" />
@@ -35,6 +38,8 @@
 </template>
 
 <script>
+import "@/assets/css/bar-chart.css";
+import "@/assets/css/common.css";
 import chartData from "@/components/charts/barsChart/BarsChartMock.json";
 import ChartTitle from "@/components/common/ChartTitle";
 import ChartGrid from "@/components/common/ChartGrid";
@@ -77,10 +82,10 @@ export default {
       return `0 0 ${this.width} ${this.height}`;
     },
     yAxisLength() {
-      return this.height + this.margin;
+      return this.height - 2 * this.margin;
     },
     xAxisLength() {
-      return this.width + this.margin;
+      return this.width - 2 * this.margin;
     },
     y2ValueXAxis() {
       return -(this.height - 2 * this.margin);
@@ -131,5 +136,3 @@ export default {
   },
 };
 </script>
-
-<style src="@/assets/css/bar-chart.css"></style>
