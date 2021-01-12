@@ -5,7 +5,7 @@
     <svg class="container" v-if="isLoaded" :viewBox="viewBox">
       <axes-titles xTitle="Years" yTitle="Stock Price" />
       <chart-grid
-        :height="yAxisLength"
+        :height="height"
         :width="xAxisLength"
         :margin="margin"
         :chartData="$options.chartData"
@@ -13,7 +13,7 @@
         :scaleY="scaleY"
         :addStrictXLine="true"
       />
-      <!--
+
       <g :transform="transformYParams">
         <rect
           class="bar"
@@ -25,7 +25,7 @@
           :width="barWidth()"
         ></rect>
       </g>
-      -->
+
       <defs>
         <linearGradient id="area-gradient" gradientTransform="rotate(90)">
           <stop offset="0%" stop-color="#f5ff1e" />
@@ -105,7 +105,7 @@ export default {
       return this.scaleX.bandwidth();
     },
     barHeight(y) {
-      return this.height - this.scaleY(y);
+      return this.yAxisLength - this.scaleY(y);
     },
     setScales() {
       const chartData = this.$options.chartData;
@@ -117,7 +117,7 @@ export default {
 
       this.scaleY = d3Scale
         .scaleLinear()
-        .range([this.height, 0])
+        .range([this.yAxisLength, 0])
         .domain([0, d3.max(chartData, (d) => d.y)]);
     },
     getX(d) {
