@@ -1,5 +1,5 @@
 <template>
-  <text class="bar-title" :x="margin" :y="50">{{ chartTitle }}</text>
+  <span class="chart-title">{{ chartTitle }}</span>
 </template>
 
 <script>
@@ -11,12 +11,8 @@ export default {
       type: String,
       default: "",
     },
-    margin: {
-      type: Number,
-      default: 30,
-    },
   },
 };
 </script>
 
-<style src=""></style>
+<style src="@/assets/css/common.css"></style>
