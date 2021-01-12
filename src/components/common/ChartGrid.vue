@@ -18,7 +18,7 @@
           x1="0"
           y1="0"
           x2="0"
-          y2="-440"
+          :y2="-height + 2 * margin"
         ></line>
       </g>
     </g>
@@ -40,10 +40,13 @@
           v-if="showGrid"
           x1="0"
           y1="0"
-          x2="440"
+          :x2="width - 2 * margin"
           y2="0"
         ></line>
       </g>
+    </g>
+    <g class="axis-pathes" :transform="transformXParams">
+      <path class="axis-strict-line" d="M600 0 V300"></path>
     </g>
   </fragment>
 </template>
@@ -79,6 +82,10 @@ export default {
     showGrid: {
       type: Boolean,
       default: true,
+    },
+    addStrictXLine: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {

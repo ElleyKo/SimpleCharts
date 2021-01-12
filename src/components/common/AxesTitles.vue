@@ -1,6 +1,6 @@
 <template>
   <g>
-    <text class="axis-title" y="50" x="300" v-if="hasXTitle">
+    <text class="axis-title" y="50" :x="height - 250" v-if="hasXTitle">
       {{ xTitle }}
     </text>
     <text
@@ -27,6 +27,10 @@ export default {
     xTitle: {
       type: String,
       default: "",
+    },
+    height: {
+      type: Number,
+      default: 0,
     },
   },
   computed: {
