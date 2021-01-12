@@ -28,9 +28,7 @@ text {
   stroke-width: 1.5;
   fill: none;
 }
-.container {
-  margin: 0 400px;
-}
+
 .pointColor {
   fill: #ffeec1;
   stroke: #174b93;
@@ -55,4 +53,9 @@ text {
 }
 .tooltip .tooltip-text {
   fill: red;
+}
+
+.axis-strict-line {
+  stroke: green;
+  stroke-width: 0.2;
 }
