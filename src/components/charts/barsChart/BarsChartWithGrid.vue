@@ -25,12 +25,11 @@
           :width="barWidth()"
         ></rect>
       </g>
-
       <defs>
         <linearGradient id="area-gradient" gradientTransform="rotate(90)">
-          <stop offset="0%" stop-color="#f5ff1e" />
-          <stop offset="50%" stop-color="#fbb91c" />
-          <stop offset="100%" stop-color="#174b93" />
+          <stop offset="0%" :stop-color="getRandomColorOne" />
+          <stop offset="50%" :stop-color="getRandomColorTwo" />
+          <stop offset="100%" :stop-color="getRandomColorThree" />
         </linearGradient>
       </defs>
     </svg>
@@ -70,6 +69,15 @@ export default {
     },
   },
   computed: {
+    getRandomColorOne() {
+      return "#" + this.randomPart() + this.randomPart() + this.randomPart();
+    },
+    getRandomColorTwo() {
+      return "#" + this.randomPart() + this.randomPart() + this.randomPart();
+    },
+    getRandomColorThree() {
+      return "#" + this.randomPart() + this.randomPart() + this.randomPart();
+    },
     transformXParams() {
       return (
         "translate(" + this.margin + "," + (this.height - this.margin) + ")"
@@ -101,6 +109,10 @@ export default {
     };
   },
   methods: {
+    randomPart() {
+      const hex = Math.floor(Math.random() * 256).toString(16);
+      return ("0" + String(hex)).substr(-2);
+    },
     barWidth() {
       return this.scaleX.bandwidth();
     },
