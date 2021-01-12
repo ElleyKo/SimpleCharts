@@ -1,3 +1,15 @@
 .bar {
   fill: url("#area-gradient");
 }
+
+.bar ~ .tooltip {
+  visibility: hidden;
+}
+
+.bar:hover {
+  fill: lightblue;
+}
+
+.bar:hover ~ .tooltip {
+  visibility: visible;
+}

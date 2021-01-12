@@ -24,6 +24,17 @@
           :height="barHeight(point.y)"
           :width="barWidth()"
         ></rect>
+        <text
+          v-for="(point, index) in $options.chartData"
+          :key="'point' + index"
+          class="tooltip"
+          :dy="scaleY(point.y)"
+          y="-5"
+          :x="scaleX(point.x)"
+          style="text-anchor: middle;"
+        >
+          {{ point.y }}
+        </text>
       </g>
       <defs>
         <linearGradient id="area-gradient" gradientTransform="rotate(90)">
