@@ -1,34 +1,37 @@
 <template>
-  <svg class="container" v-if="isLoaded" :viewBox="viewBox">
-    <axes-titles xTitle="Years" yTitle="Stock Price" />
-    <chart-grid
-      :height="height"
-      :width="width"
-      :margin="margin"
-      :chartData="$options.chartData"
-      :scaleX="scaleX"
-      :scaleY="scaleY"
-    />
-    <chart-title :chartTitle="chartTitle" :margin="margin" />
-    <g transform="translate(100,100)">
-      <rect
-        class="bar"
-        v-for="(point, index) in $options.chartData"
-        :key="index"
-        :x="scaleX(point.x)"
-        :y="scaleY(point.y)"
-        :height="barHeight(point.y)"
+  <div class="chart-container">
+    <!--TODO display mobile change style-->
+    <chart-title :chartTitle="chartTitle" />
+    <svg class="container" v-if="isLoaded" :viewBox="viewBox">
+      <axes-titles xTitle="Years" yTitle="Stock Price" />
+      <chart-grid
+        :height="xAxisLength"
         :width="barWidth()"
-      ></rect>
-    </g>
-    <defs>
-      <linearGradient id="area-gradient" gradientTransform="rotate(90)">
-        <stop offset="0%" stop-color="#f5ff1e" />
-        <stop offset="50%" stop-color="#fbb91c" />
-        <stop offset="100%" stop-color="#174b93" />
-      </linearGradient>
-    </defs>
-  </svg>
+        :margin="margin"
+        :chartData="$options.chartData"
+        :scaleX="scaleX"
+        :scaleY="scaleY"
+      />
+      <g :transform="transformYParams">
+        <rect
+          class="bar"
+          v-for="(point, index) in $options.chartData"
+          :key="index"
+          :x="scaleX(point.x) - barWidth() / 2"
+          :y="scaleY(point.y)"
+          :height="barHeight(point.y)"
+          :width="barWidth()"
+        ></rect>
+      </g>
+      <defs>
+        <linearGradient id="area-gradient" gradientTransform="rotate(90)">
+          <stop offset="0%" stop-color="#f5ff1e" />
+          <stop offset="50%" stop-color="#fbb91c" />
+          <stop offset="100%" stop-color="#174b93" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
 </template>
 
 <script>
@@ -50,7 +53,7 @@ export default {
     },
     width: {
       type: Number,
-      default: 600,
+      default: 500,
     },
     margin: {
       type: Number,
@@ -74,10 +77,10 @@ export default {
       return `0 0 ${this.width} ${this.height}`;
     },
     yAxisLength() {
-      return this.height - this.margin;
+      return this.height + this.margin;
     },
     xAxisLength() {
-      return this.width - this.margin;
+      return this.width + this.margin;
     },
     y2ValueXAxis() {
       return -(this.height - 2 * this.margin);
@@ -103,13 +106,13 @@ export default {
       const chartData = this.$options.chartData;
       this.scaleX = d3Scale
         .scaleBand()
-        .range([this.zeroValue, this.xAxisLength])
+        .range([this.zeroValue, this.width])
         .padding(0.4)
         .domain(chartData.map((d) => d.x));
 
       this.scaleY = d3Scale
         .scaleLinear()
-        .range([this.yAxisLength, 0])
+        .range([this.height, 0])
         .domain([0, d3.max(chartData, (d) => d.y)]);
     },
     getX(d) {

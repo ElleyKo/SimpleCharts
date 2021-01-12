@@ -1,7 +1,3 @@
 .bar {
   fill: url("#area-gradient");
 }
-.bar-title {
-  transform: translate(100, 0);
-  font-size: 24px;
-}
